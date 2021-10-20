@@ -7,13 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 
 const windowWidth = Dimensions.get('window').width;
 
 const Home = ({navigation}) => {
   return (
-    <>
+    <View style={{flex: 1}}>
       <Header navigation={navigation} routeName="Home" />
       <View style={styles.container}>
         <View style={styles.tilesContainer}>
@@ -25,8 +26,9 @@ const Home = ({navigation}) => {
               });
             }}>
             <Image
-              source={require('../assets/img/bettercallsaul.jpeg')}
+              source={require('../assets/img/movie.png')}
               style={styles.image}
+              resizeMode="contain"
             />
             <Text style={styles.title}>Movies</Text>
           </TouchableOpacity>
@@ -40,14 +42,16 @@ const Home = ({navigation}) => {
               });
             }}>
             <Image
-              source={require('../assets/img/bettercallsaul.jpeg')}
+              source={require('../assets/img/movie.png')}
               style={styles.image}
+              resizeMode="contain"
             />
             <Text style={styles.title}>Series</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </>
+      <Footer />
+    </View>
   );
 };
 

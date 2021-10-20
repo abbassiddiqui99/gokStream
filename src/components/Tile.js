@@ -7,7 +7,9 @@ const TileList = ({item}) => {
   return (
     <View style={styles.tilesContainer}>
       <Image
-        source={require('../assets/img/bettercallsaul.jpeg')}
+        source={{
+          uri: `${item.img}`,
+        }}
         style={styles.image}
       />
       <Text style={styles.title}>
