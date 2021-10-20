@@ -1,10 +1,7 @@
-/* eslint-disable react-native/no-inline-styles */
-import {useRoute} from '@react-navigation/core';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 const Header = ({navigation, routeName}) => {
-  console.log(routeName);
   return (
     <>
       <View style={styles.container}>
@@ -21,13 +18,19 @@ const Header = ({navigation, routeName}) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Movies');
+                navigation.navigate({
+                  name: 'Movies',
+                  params: {type: 'movie'},
+                });
               }}>
               <Text style={styles.textColorMargin}>Movies</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Series');
+                navigation.navigate({
+                  name: 'Series',
+                  params: {type: 'series'},
+                });
               }}>
               <Text style={styles.textColorMargin}>Series</Text>
             </TouchableOpacity>

@@ -3,8 +3,6 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './src/screens/Home';
-import Movies from './src/screens/Movies';
-import Series from './src/screens/Series';
 import DataList from './src/screens/DataList';
 
 const Stack = createNativeStackNavigator();
@@ -16,9 +14,9 @@ function App() {
         screenOptions={{
           headerShown: false,
         }}>
-        <Stack.Screen name="Home" component={DataList} />
-        <Stack.Screen name="Movies" component={Movies} />
-        <Stack.Screen name="Series" component={Series} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Movies" component={DataList} />
+        <Stack.Screen name="Series" component={DataList} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,7 +1,10 @@
+import {Picker} from '@react-native-picker/picker';
 import React, {useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
-import {get} from '../common/function';
-import Series from './Series';
+import {View, Text, SafeAreaView, FlatList, StyleSheet} from 'react-native';
+import Header from '../components/Header';
+import TileList from '../components/Tile';
+// import {get} from '../common/function';
+// import Series from './Series';
 
 const data = {
   total: 100,
@@ -1409,8 +1412,26 @@ const data = {
   ],
 };
 
-const DataList = () => {
+const DataList = props => {
+  const genreType = props.route.params.type;
+  const genreName = props.route.name;
+  // const [error, setError] = useState('');
   const [tilesList, setTilesList] = useState([]);
+  const [fiteredList, setFiteredList] = useState([]);
+  const [sortOrder, setSortOrder] = useState('asc');
+  // const [isLoading, setIsLoading] = useState(false);
+  const [year, setYear] = useState('');
+
+  const length = 25;
+
+  useEffect(() => {
+    // setError('');
+    setYear('');
+    setTilesList([]);
+    setFiteredList([]);
+    setSortOrder('asc');
+  }, [genreType]);
+
   useEffect(() => {
     const pullImageUrl = item => {
       if (
@@ -1426,7 +1447,8 @@ const DataList = () => {
     const list = [];
     if (data && data.entries && Array.isArray(data.entries)) {
       data.entries.forEach((item, i) => {
-        if (item?.programType === 'series') {
+        // Right now it filter only sereis
+        if (item?.programType === genreType) {
           list.push({
             img: pullImageUrl(item),
             title: item?.title,
@@ -1436,15 +1458,66 @@ const DataList = () => {
       });
     }
     setTilesList(list);
-  }, []);
+  }, [genreType]);
 
-  console.log(tilesList);
+  useEffect(() => {
+    setFiteredList(filter_sort(tilesList));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tilesList, sortOrder, year]);
+
+  const filter_sort = list => {
+    list = JSON.parse(JSON.stringify(list));
+    return list
+      .filter(item => !year || `${item.year}` === `${year}`)
+      .sort((a, b) => {
+        const a_title = `${a.title}`.toLowerCase();
+        const b_title = `${b.title}`.toLowerCase();
+        if (a_title < b_title) {
+          return sortOrder === 'asc' ? -1 : 1;
+        }
+        if (a_title > b_title) {
+          return sortOrder === 'asc' ? 1 : -1;
+        }
+        return 0;
+      })
+      .splice(0, length);
+  };
 
   return (
-    <View>
-      <Text>DataList</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Header navigation={props.navigation} routeName={genreName} />
+      <View>
+        <Picker
+          selectedValue={year}
+          onValueChange={(itemValue, itemIndex) => setYear(itemValue)}>
+          <Picker.Item label="All Year" value="" />
+          <Picker.Item label="2014" value="2014" />
+          <Picker.Item label="2015" value="2015" />
+          <Picker.Item label="2016" value="2016" />
+          <Picker.Item label="2017" value="2017" />
+        </Picker>
+      </View>
+      {fiteredList && fiteredList.length ? (
+        <FlatList
+          numColumns={2}
+          data={fiteredList}
+          renderItem={TileList}
+          keyExtractor={item => item.title}
+        />
+      ) : (
+        <Text style={styles.text}>No DataList!</Text>
+      )}
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  text: {
+    textAlign: 'center',
+  },
+});
 
 export default DataList;
