@@ -12,7 +12,6 @@ const DataList = props => {
   const [error, setError] = useState('');
   const [tilesList, setTilesList] = useState([]);
   const [fiteredList, setFiteredList] = useState([]);
-  const [sortOrder, setSortOrder] = useState('asc');
   const [isLoading, setIsLoading] = useState(false);
   const [year, setYear] = useState('');
 
@@ -23,7 +22,6 @@ const DataList = props => {
     setYear('');
     setTilesList([]);
     setFiteredList([]);
-    setSortOrder('asc');
   }, [genreType]);
 
   useEffect(() => {
@@ -41,7 +39,6 @@ const DataList = props => {
     setIsLoading(true);
     get('https://mumer01.github.io/publicApis/BoxOffice.json')
       .then(data => {
-        setIsLoading(false);
         const list = [];
         if (data && data.entries && Array.isArray(data.entries)) {
           data.entries.forEach((item, i) => {
@@ -55,6 +52,7 @@ const DataList = props => {
           });
         }
         setTilesList(list);
+        setIsLoading(false);
       })
       .catch(err => {
         console.error(err);
@@ -66,7 +64,7 @@ const DataList = props => {
   useEffect(() => {
     setFiteredList(filter_sort(tilesList));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tilesList, sortOrder, year]);
+  }, [tilesList, year]);
 
   const filter_sort = list => {
     list = JSON.parse(JSON.stringify(list));

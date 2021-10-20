@@ -14,7 +14,7 @@ const windowWidth = Dimensions.get('window').width;
 
 const Home = ({navigation}) => {
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.mainContainer}>
       <Header navigation={navigation} routeName="Home" />
       <View style={styles.container}>
         <View style={styles.tilesContainer}>
@@ -56,6 +56,9 @@ const Home = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+  },
   container: {
     flexDirection: 'row',
   },
